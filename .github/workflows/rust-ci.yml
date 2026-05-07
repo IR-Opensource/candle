@@ -18,7 +18,6 @@ jobs:
           api_url: "https://app.dev.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY }}
           debug: true
-          workdir: candle-book/
 
       # - name: Install Rust toolchain
       #   uses: dtolnay/rust-toolchain@stable
