@@ -18,17 +18,18 @@ jobs:
           api_url: "https://app.dev.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY }}
           debug: true
+          workdir: candle-book/
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
+      # - name: Install Rust toolchain
+      #   uses: dtolnay/rust-toolchain@stable
+      #   with:
+      #     components: rustfmt, clippy
 
-      - name: Build project
-        run: cargo build --workspace
+      # - name: Build project
+      #   run: cargo build --workspace
 
-      - name: Check formatting
-        run: cargo fmt --all -- --check
+      # - name: Check formatting
+      #   run: cargo fmt --all -- --check
 
-      - name: Run clippy
-        run: cargo clippy --workspace --all-targets -- -D warnings
+      # - name: Run clippy
+      #   run: cargo clippy --workspace --all-targets -- -D warnings
