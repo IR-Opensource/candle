@@ -19,6 +19,15 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+
+          
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+         api_url: "https://app.stage.invisirisk.com"
+         app_token: ${{secrets.IR_API_KEY}}
+
+         
       - name: Remove cargo config (macOS ring crate fix)
         if: runner.os == 'macOS'
         run: rm -f .cargo/config.toml
@@ -43,6 +52,12 @@ jobs:
         run: |
           export RUSTFLAGS="-C target-feature=neon"
           cargo check --workspace 
+      
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+         cleanup: "true"   
 
   test:
     name: Test Suite
@@ -51,6 +66,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+         api_url: "https://app.stage.invisirisk.com"
+         app_token: ${{secrets.IR_API_KEY}}
+         
       - name: Free disk space (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -79,23 +100,52 @@ jobs:
         if: runner.os != 'Linux'
         run: cargo test --workspace
 
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+         cleanup: "true" 
+
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+         api_url: "https://app.stage.invisirisk.com"
+         app_token: ${{secrets.IR_API_KEY}}
+      
       - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt
       - run: cargo fmt --all -- --check
 
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+         cleanup: "true"
+
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+         api_url: "https://app.stage.invisirisk.com"
+         app_token: ${{secrets.IR_API_KEY}}
+      
       - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
       - run: cargo clippy --workspace --tests --examples --benches -- -D warnings
- 
+
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+         cleanup: "true"
