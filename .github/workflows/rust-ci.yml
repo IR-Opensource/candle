@@ -18,6 +18,7 @@ jobs:
           api_url: "https://app.dev.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY }}
           debug: true
+          mode: sidecar
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
